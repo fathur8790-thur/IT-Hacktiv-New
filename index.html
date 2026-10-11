@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgentBlueprint — AI Agent Readiness Workbench</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ibm: {
+              blue:    '#0F62FE',
+              bluedark:'#0043CE',
+              bluelight:'#D0E2FF',
+              gray10:  '#F4F4F4',
+              gray20:  '#E0E0E0',
+              gray50:  '#8D8D8D',
+              gray80:  '#393939',
+              gray100: '#161616',
+              green:   '#24A148',
+              greenlight:'#DEFBE6',
+              red:     '#DA1E28',
+              redlight:'#FFF1F1',
+              yellow:  '#F1C21B',
+              yellowlight:'#FDF5D3',
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-ibm-gray10 text-ibm-gray100 min-h-screen">
+
+  <!-- ===== TOP NAV ===== -->
+  <header class="bg-ibm-gray100 text-white shadow-lg sticky top-0 z-50" role="banner">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span style="color:#78A9FF" class="font-black text-2xl tracking-tight">Agent<span class="text-white">Blueprint</span></span>
+        <span class="hidden sm:inline text-ibm-gray50 text-sm border-l border-ibm-gray80 pl-3">IBM SkillsBuild · IT &amp; AI Agent Track</span>
+      </div>
+      <nav class="flex items-center gap-1 text-sm" aria-label="Navigasi utama">
+        <button onclick="showSection('builder')" class="nav-btn active" id="nav-builder">Builder</button>
+        <button onclick="showSection('ethics')" class="nav-btn" id="nav-ethics">Ethics</button>
+        <button onclick="showSection('simulation')" class="nav-btn" id="nav-simulation">Simulation</button>
+        <button onclick="showSection('export')" class="nav-btn" id="nav-export">Export</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== MAIN ===== -->
+  <main class="max-w-7xl mx-auto px-4 py-6 space-y-6" role="main">
+
+    <!-- ===== SECTION: BUILDER ===== -->
+    <section id="section-builder" aria-labelledby="heading-builder">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+        <h1 id="heading-builder" class="text-2xl font-bold text-ibm-gray100">Blueprint Builder</h1>
+        <button onclick="openBlueprintModal()" class="btn-primary flex items-center gap-2" aria-label="Buat blueprint baru">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          Buat Blueprint
+        </button>
+      </div>
+
+      <!-- Filter & Search -->
+      <div class="flex flex-col sm:flex-row gap-3 mb-5">
+        <div class="relative flex-1">
+          <input id="search-input" type="search" placeholder="Cari blueprint…" oninput="renderBlueprints()"
+            class="w-full pl-9 pr-4 py-2 border border-ibm-gray20 rounded-lg bg-white text-sm focus:outline-none focus:ring-2 focus:ring-ibm-blue" aria-label="Cari blueprint" />
+          <svg class="w-4 h-4 absolute left-3 top-2.5 text-ibm-gray50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/></svg>
+        </div>
+        <div class="flex gap-2 flex-wrap" role="group" aria-label="Filter status">
+          <button onclick="setFilter('all')" class="filter-btn active" id="filter-all">Semua</button>
+          <button onclick="setFilter('ready')" class="filter-btn" id="filter-ready">✅ Siap</button>
+          <button onclick="setFilter('not_ready')" class="filter-btn" id="filter-not_ready">⚠️ Belum Siap</button>
+        </div>
+      </div>
+
+      <!-- Summary Stats Bar (Fix 3) -->
+      <div id="summary-bar" class="hidden grid grid-cols-3 gap-3 mb-5" aria-label="Ringkasan statistik blueprint"></div>
+
+      <!-- Blueprint Cards -->
+      <div id="blueprint-list" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4" aria-live="polite" aria-label="Daftar blueprint">
+        <!-- Rendered by JS -->
+      </div>
+      <p id="empty-state" class="hidden text-center py-16 text-ibm-gray50 text-sm">
+        Belum ada blueprint. Klik <strong>Buat Blueprint</strong> untuk memulai.
+      </p>
+    </section>
+
+    <!-- ===== SECTION: ETHICS ===== -->
+    <section id="section-ethics" class="hidden" aria-labelledby="heading-ethics">
+      <h2 id="heading-ethics" class="text-2xl font-bold mb-1">Ethics &amp; Risk Checklist</h2>
+      <p class="text-ibm-gray50 text-sm mb-5">Pilih blueprint, lalu centang item yang sudah dipenuhi. Checklist ini memengaruhi Readiness Score.</p>
+      <div class="flex flex-col sm:flex-row gap-3 mb-5">
+        <label for="ethics-bp-select" class="sr-only">Pilih Blueprint</label>
+        <select id="ethics-bp-select" onchange="renderEthicsPanel()" class="select-field flex-1">
+          <option value="">— Pilih Blueprint —</option>
+        </select>
+      </div>
+      <div id="ethics-panel" class="hidden bg-white rounded-2xl shadow-card p-6 space-y-4">
+        <h3 class="font-semibold text-lg text-ibm-gray100" id="ethics-bp-name">—</h3>
+        <div id="ethics-items" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <!-- Rendered by JS -->
+        </div>
+        <div class="mt-4 p-4 bg-ibm-bluelight rounded-xl">
+          <p class="text-sm text-ibm-bluedark font-medium" id="ethics-score-info">Centang semua item untuk meningkatkan skor.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECTION: SIMULATION ===== -->
+    <section id="section-simulation" class="hidden" aria-labelledby="heading-simulation">
+      <h2 id="heading-simulation" class="text-2xl font-bold mb-1">Simulasi Run Log</h2>
+      <p class="text-ibm-gray50 text-sm mb-5">Pilih blueprint dan klik <strong>Simulate Run</strong> untuk menghasilkan log eksekusi per task.</p>
+      <div class="flex flex-col sm:flex-row gap-3 mb-5">
+        <label for="sim-bp-select" class="sr-only">Pilih Blueprint untuk Simulasi</label>
+        <select id="sim-bp-select" class="select-field flex-1">
+          <option value="">— Pilih Blueprint —</option>
+        </select>
+        <button onclick="runSimulation()" class="btn-primary">
+          ▶ Simulate Run
+        </button>
+      </div>
+      <div id="sim-summary" class="hidden grid grid-cols-3 gap-3 mb-5">
+        <div class="stat-card"><span class="stat-label">Success Rate</span><span id="sim-success-rate" class="stat-value text-ibm-green">—</span></div>
+        <div class="stat-card"><span class="stat-label">Avg Latency</span><span id="sim-avg-latency" class="stat-value">—</span></div>
+        <div class="stat-card"><span class="stat-label">Tasks Run</span><span id="sim-task-count" class="stat-value">—</span></div>
+      </div>
+      <div id="sim-log" class="space-y-2" aria-live="polite">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- ===== SECTION: EXPORT ===== -->
+    <section id="section-export" class="hidden" aria-labelledby="heading-export">
+      <h2 id="heading-export" class="text-2xl font-bold mb-1">Export Blueprint</h2>
+      <p class="text-ibm-gray50 text-sm mb-5">Unduh blueprint sebagai file Markdown (.md) atau JSON (.json).</p>
+      <div class="flex flex-col sm:flex-row gap-3 mb-6">
+        <label for="export-bp-select" class="sr-only">Pilih Blueprint untuk Export</label>
+        <select id="export-bp-select" class="select-field flex-1">
+          <option value="">— Pilih Blueprint —</option>
+        </select>
+      </div>
+      <div class="flex gap-3 flex-wrap">
+        <button onclick="exportMarkdown()" class="btn-secondary">
+          ⬇ Download Markdown
+        </button>
+        <button onclick="exportJSON()" class="btn-primary">
+          ⬇ Download JSON
+        </button>
+      </div>
+      <div id="export-preview" class="mt-6 hidden">
+        <h3 class="font-semibold mb-2 text-sm text-ibm-gray80">Preview</h3>
+        <pre id="export-preview-content" class="bg-ibm-gray100 text-ibm-gray10 text-xs p-4 rounded-xl overflow-x-auto leading-relaxed max-h-96"></pre>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== MODAL: BLUEPRINT ===== -->
+  <div id="modal-blueprint" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modal-bp-title">
+    <div class="modal-box max-w-xl">
+      <div class="flex items-center justify-between mb-4">
+        <h2 id="modal-bp-title" class="text-xl font-bold">Blueprint</h2>
+        <button onclick="closeModal('modal-blueprint')" class="close-btn" aria-label="Tutup modal">✕</button>
+      </div>
+      <form id="form-blueprint" onsubmit="saveBlueprint(event)" novalidate>
+        <input type="hidden" id="bp-id" />
+        <div class="field-group">
+          <label for="bp-name" class="field-label">Nama Agent <span class="text-ibm-red">*</span></label>
+          <input id="bp-name" type="text" required maxlength="80" placeholder="e.g. Customer Support Agent"
+            class="field-input" />
+        </div>
+        <div class="field-group">
+          <label for="bp-goal" class="field-label">Tujuan Terukur <span class="text-ibm-red">*</span></label>
+          <input id="bp-goal" type="text" required maxlength="200" placeholder="e.g. Selesaikan 90% tiket dalam 5 menit"
+            class="field-input" />
+        </div>
+        <div class="field-group">
+          <label for="bp-desc" class="field-label">Deskripsi</label>
+          <textarea id="bp-desc" rows="3" maxlength="500" placeholder="Konteks dan scope agent…"
+            class="field-input resize-none"></textarea>
+        </div>
+        <div class="flex justify-end gap-2 mt-5">
+          <button type="button" onclick="closeModal('modal-blueprint')" class="btn-ghost">Batal</button>
+          <button type="submit" class="btn-primary">Simpan Blueprint</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== MODAL: TASK ===== -->
+  <div id="modal-task" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modal-task-title">
+    <div class="modal-box max-w-2xl">
+      <div class="flex items-center justify-between mb-4">
+        <h2 id="modal-task-title" class="text-xl font-bold">Task</h2>
+        <button onclick="closeModal('modal-task')" class="close-btn" aria-label="Tutup modal task">✕</button>
+      </div>
+      <form id="form-task" onsubmit="saveTask(event)" novalidate>
+        <input type="hidden" id="task-id" />
+        <input type="hidden" id="task-bp-id" />
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="field-group sm:col-span-2">
+            <label for="task-name" class="field-label">Nama Task <span class="text-ibm-red">*</span></label>
+            <input id="task-name" type="text" required maxlength="100" placeholder="e.g. Classify Ticket"
+              class="field-input" />
+          </div>
+          <div class="field-group">
+            <label for="task-input" class="field-label">Input</label>
+            <input id="task-input" type="text" maxlength="200" placeholder="e.g. Teks tiket user"
+              class="field-input" />
+          </div>
+          <div class="field-group">
+            <label for="task-validation" class="field-label">Validasi</label>
+            <input id="task-validation" type="text" maxlength="200" placeholder="e.g. Confidence ≥ 0.85"
+              class="field-input" />
+          </div>
+          <div class="field-group">
+            <label for="task-output" class="field-label">Output yang Diharapkan</label>
+            <input id="task-output" type="text" maxlength="200" placeholder="e.g. Label kategori + prioritas"
+              class="field-input" />
+          </div>
+          <div class="field-group">
+            <label for="task-tools" class="field-label">Tools / API</label>
+            <input id="task-tools" type="text" maxlength="200" placeholder="e.g. OpenAI API, Zendesk API"
+              class="field-input" />
+          </div>
+          <div class="field-group sm:col-span-2">
+            <label for="task-failure" class="field-label">Strategi Kegagalan</label>
+            <select id="task-failure" class="field-input">
+              <option value="">— Pilih Strategi —</option>
+              <option value="timeout">Timeout</option>
+              <option value="retry">Retry</option>
+              <option value="fallback">Fallback</option>
+              <option value="rollback">Rollback</option>
+            </select>
+          </div>
+          <div class="field-group sm:col-span-2">
+            <label for="task-failure-note" class="field-label">Catatan Failure Mode</label>
+            <textarea id="task-failure-note" rows="2" maxlength="300" placeholder="Jelaskan kondisi dan penanganannya…"
+              class="field-input resize-none"></textarea>
+          </div>
+          <div class="field-group sm:col-span-2">
+            <label class="flex items-center gap-3 cursor-pointer select-none">
+              <input id="task-human" type="checkbox" class="w-4 h-4 accent-ibm-blue" />
+              <span class="field-label mb-0">Perlu Human Approval (high-risk)</span>
+            </label>
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 mt-5">
+          <button type="button" onclick="closeModal('modal-task')" class="btn-ghost">Batal</button>
+          <button type="submit" class="btn-primary">Simpan Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== MODAL: DETAIL BLUEPRINT ===== -->
+  <div id="modal-detail" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modal-detail-title">
+    <div class="modal-box max-w-3xl max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between mb-4 sticky top-0 bg-white z-10 pb-2 border-b border-ibm-gray20">
+        <h2 id="modal-detail-title" class="text-xl font-bold">Detail Blueprint</h2>
+        <button onclick="closeModal('modal-detail')" class="close-btn" aria-label="Tutup detail">✕</button>
+      </div>
+      <div id="modal-detail-content">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast notification -->
+  <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

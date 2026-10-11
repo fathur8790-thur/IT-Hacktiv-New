@@ -1,0 +1,627 @@
+/* =====================================================
+   AgentBlueprint — Custom Styles (IBM Color Theme)
+   
+   NOTE: This file uses native CSS only (no @apply).
+   Tailwind CDN handles utility classes in HTML.
+   This file provides component classes, animations,
+   custom properties, and WCAG-safe overrides.
+   ===================================================== */
+
+/* ---- IBM Color Tokens ---- */
+:root {
+  --ibm-blue:        #0F62FE;
+  --ibm-bluedark:    #0043CE;
+  --ibm-bluelight:   #D0E2FF;
+  --ibm-gray10:      #F4F4F4;
+  --ibm-gray20:      #E0E0E0;
+  --ibm-gray50:      #8D8D8D;
+  --ibm-gray60:      #525252;
+  --ibm-gray80:      #393939;
+  --ibm-gray100:     #161616;
+  --ibm-green:       #24A148;
+  --ibm-greenlight:  #DEFBE6;
+  --ibm-red:         #DA1E28;
+  --ibm-redlight:    #FFF1F1;
+  --ibm-yellow:      #F1C21B;
+  --ibm-yellowlight: #FDF5D3;
+}
+
+/* ---- Base ---- */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, "IBM Plex Sans", "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- Scrollbar (Webkit) ---- */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--ibm-gray10); }
+::-webkit-scrollbar-thumb { background: var(--ibm-gray20); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--ibm-gray50); }
+
+/* ---- Navigation Buttons ---- */
+.nav-btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #D1D5DB;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.15s, background-color 0.15s;
+}
+.nav-btn:hover {
+  color: #fff;
+  background-color: #374151;
+}
+.nav-btn.active {
+  background-color: var(--ibm-blue);
+  color: #fff;
+}
+
+/* ---- Filter Buttons ---- */
+.filter-btn {
+  padding: 6px 16px;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid var(--ibm-gray20);
+  background: #fff;
+  color: var(--ibm-gray80);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background-color 0.15s;
+}
+.filter-btn:hover {
+  border-color: var(--ibm-blue);
+  color: var(--ibm-blue);
+}
+.filter-btn.active {
+  background-color: var(--ibm-blue);
+  color: #fff;
+  border-color: var(--ibm-blue);
+}
+
+/* ---- Buttons ---- */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: var(--ibm-blue);
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.15s, transform 0.1s;
+  text-decoration: none;
+}
+.btn-primary:hover  { background-color: var(--ibm-bluedark); }
+.btn-primary:active { transform: scale(0.96); }
+.btn-primary:focus-visible {
+  outline: 2px solid var(--ibm-blue);
+  outline-offset: 2px;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: #fff;
+  color: var(--ibm-blue);
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 8px;
+  border: 1.5px solid var(--ibm-blue);
+  cursor: pointer;
+  transition: background-color 0.15s, transform 0.1s;
+}
+.btn-secondary:hover  { background-color: var(--ibm-bluelight); }
+.btn-secondary:active { transform: scale(0.96); }
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: transparent;
+  color: var(--ibm-gray80);
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 8px;
+  border: 1px solid var(--ibm-gray20);
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+.btn-ghost:hover { background-color: var(--ibm-gray10); }
+
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: var(--ibm-gray50);
+  cursor: pointer;
+  transition: color 0.15s, background-color 0.15s;
+  flex-shrink: 0;
+}
+.btn-icon:hover { color: var(--ibm-gray100); background-color: var(--ibm-gray10); }
+.btn-icon.text-ibm-red { color: var(--ibm-red); }
+.btn-icon.text-ibm-red:hover { background-color: var(--ibm-redlight); }
+
+/* ---- Cards ---- */
+.card {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid var(--ibm-gray20);
+  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.06);
+  transition: box-shadow 0.2s;
+}
+.card:hover { box-shadow: 0 4px 12px 0 rgba(0,0,0,0.1); }
+
+.blueprint-card {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid var(--ibm-gray20);
+  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.06);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: box-shadow 0.2s, transform 0.18s;
+}
+.blueprint-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px 0 rgba(15, 98, 254, 0.12);
+}
+
+/* ---- Score Badges ---- */
+.score-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.score-ready     { background: var(--ibm-greenlight);  color: var(--ibm-green); }
+.score-partial   { background: var(--ibm-yellowlight); color: #92400e; }
+.score-not-ready { background: var(--ibm-redlight);    color: var(--ibm-red); }
+
+/* ---- Score Bar ---- */
+.score-bar-track {
+  width: 100%;
+  background: var(--ibm-gray20);
+  border-radius: 9999px;
+  height: 8px;
+  overflow: hidden;
+}
+.score-bar-fill {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ---- Form Fields ---- */
+.field-group { display: flex; flex-direction: column; gap: 4px; }
+
+.field-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ibm-gray80);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 2px;
+}
+
+.field-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--ibm-gray20);
+  border-radius: 8px;
+  font-size: 0.875rem;
+  background: #fff;
+  color: var(--ibm-gray100);
+  transition: box-shadow 0.15s, border-color 0.15s;
+  font-family: inherit;
+}
+.field-input::placeholder { color: var(--ibm-gray50); }
+.field-input:focus {
+  outline: none;
+  border-color: var(--ibm-blue);
+  box-shadow: 0 0 0 2px rgba(15,98,254,0.25);
+}
+.field-input:invalid:not(:placeholder-shown) {
+  border-color: var(--ibm-red);
+  box-shadow: 0 0 0 1px var(--ibm-red);
+}
+.select-field { cursor: pointer; }
+
+/* ---- Modal ---- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 100;
+  backdrop-filter: blur(2px);
+  animation: fadeIn 0.15s ease;
+}
+.modal-box {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+  width: 100%;
+  padding: 24px;
+  animation: slideUp 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.close-btn {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: var(--ibm-gray50);
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: color 0.15s, background-color 0.15s;
+}
+.close-btn:hover { color: var(--ibm-gray100); background-color: var(--ibm-gray10); }
+
+/* ---- Task Row ---- */
+.task-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--ibm-gray20);
+  background: var(--ibm-gray10);
+  transition: border-color 0.15s;
+}
+.task-row:hover { border-color: var(--ibm-blue); }
+
+.task-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.task-badge-timeout  { background: #FEF3C7; color: #92400e; }
+.task-badge-retry    { background: #DBEAFE; color: var(--ibm-blue); }
+.task-badge-fallback { background: #EDE9FE; color: #6D28D9; }
+.task-badge-rollback { background: var(--ibm-redlight); color: var(--ibm-red); }
+.task-badge-none     { background: var(--ibm-gray20); color: var(--ibm-gray50); }
+
+/* ---- Simulation Log ---- */
+.sim-log-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid;
+  font-size: 0.875rem;
+}
+.sim-success { background: var(--ibm-greenlight); border-color: #A7F3D0; }
+.sim-failed  { background: var(--ibm-redlight);   border-color: #FECACA; }
+.sim-waiting { background: var(--ibm-yellowlight); border-color: #FDE68A; }
+
+/* ---- Stat Cards ---- */
+.stat-card {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid var(--ibm-gray20);
+  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.06);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.stat-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--ibm-gray50);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.stat-value {
+  font-size: 1.75rem;
+  font-weight: 900;
+  color: var(--ibm-gray100);
+  line-height: 1.1;
+}
+.stat-value.text-ibm-green { color: var(--ibm-green); }
+
+/* ---- Ethics Checklist ---- */
+.ethics-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--ibm-gray20);
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.15s, background-color 0.15s;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.ethics-item:hover { border-color: var(--ibm-blue); }
+.ethics-item.checked {
+  border-color: var(--ibm-green);
+  background: var(--ibm-greenlight);
+}
+
+/* ---- Suggestion Items ---- */
+.suggestion-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 2px 0;
+}
+
+/* ---- Toast ---- */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 200;
+  padding: 12px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 500;
+  animation: slideUp 0.2s ease;
+  max-width: 320px;
+}
+.toast-success { background: var(--ibm-green); }
+.toast-error   { background: var(--ibm-red); }
+.toast-info    { background: var(--ibm-blue); }
+
+/* ---- Readable muted text (WCAG AA 4.5:1 on white) ---- */
+.readable-muted { color: var(--ibm-gray60); } /* #525252, contrast 5.9:1 */
+
+/* ---- Animations ---- */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 639px) {
+  .modal-box  { padding: 18px; }
+  .stat-value { font-size: 1.4rem; }
+  .toast      { bottom: 12px; right: 12px; left: 12px; max-width: none; }
+}
+
+/* ---- line-clamp (for blueprint card description) ---- */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ---- Accent for checkboxes ---- */
+input[type="checkbox"].accent-ibm-blue { accent-color: var(--ibm-blue); }
+
+/* ---- Card text contrast fixes (Fix 4) ---- */
+/* Goal text: larger font, dark enough for WCAG AA on white */
+.card-goal {
+  font-size: 0.85rem;      /* up from 0.75rem */
+  line-height: 1.5;
+  color: var(--ibm-gray80); /* #393939 on white = 9.7:1 — well above AA */
+}
+/* Meta row (task count, date, checkpoint) */
+.card-meta {
+  display: flex;
+  gap: 12px;
+  font-size: 0.8rem;        /* up from 0.75rem */
+  color: var(--ibm-gray60); /* #525252 on white = 5.9:1 — passes AA */
+}
+/* Suggestion text on cards */
+.card-suggest {
+  font-size: 0.8rem;
+  color: var(--ibm-gray60);
+}
+
+/* ---- Summary bar mini stat cards (Fix 3) ---- */
+.stat-card-sm {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid var(--ibm-gray20);
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.stat-label-sm {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--ibm-gray50);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.stat-value-sm {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--ibm-gray100);
+  line-height: 1.1;
+}
+
+/* ---- Asisten Blueprint — Chat Panel ---- */
+.asst-panel {
+  margin-top: 24px;
+  border: 1px solid var(--ibm-gray20);
+  border-radius: 16px;
+  background: #fff;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.asst-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--ibm-gray100);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.asst-avatar {
+  font-size: 1.5rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.asst-title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+}
+.asst-subtitle {
+  font-size: 0.72rem;
+  color: #8D8D8D;
+  margin: 0;
+}
+
+/* Chat log area */
+.asst-log {
+  padding: 14px 14px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 120px;
+  max-height: 260px;
+  overflow-y: auto;
+  background: #FAFAFA;
+}
+
+/* Chat bubbles */
+.asst-bubble {
+  max-width: 88%;
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-size: 0.825rem;
+  line-height: 1.55;
+  animation: slideUp 0.18s ease both;
+}
+.asst-bot {
+  background: var(--ibm-bluelight);
+  color: var(--ibm-gray100);
+  border-bottom-left-radius: 4px;
+  align-self: flex-start;
+  border: 1px solid #C0D9FF;
+}
+.asst-user {
+  background: var(--ibm-blue);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+  align-self: flex-end;
+  text-align: right;
+}
+
+/* Quick-question chip buttons */
+.asst-chips {
+  padding: 8px 14px 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  background: #FAFAFA;
+  border-top: 1px solid var(--ibm-gray20);
+}
+.asst-chip {
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid var(--ibm-bluelight);
+  background: var(--ibm-bluelight);
+  color: var(--ibm-bluedark);
+  cursor: pointer;
+  transition: background-color 0.12s, border-color 0.12s;
+  white-space: nowrap;
+}
+.asst-chip:hover {
+  background: var(--ibm-blue);
+  border-color: var(--ibm-blue);
+  color: #fff;
+}
+
+/* Input row */
+.asst-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-top: 1px solid var(--ibm-gray20);
+  background: #fff;
+}
+.asst-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid var(--ibm-gray20);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-family: inherit;
+  color: var(--ibm-gray100);
+  background: var(--ibm-gray10);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.asst-input:focus {
+  outline: none;
+  border-color: var(--ibm-blue);
+  box-shadow: 0 0 0 2px rgba(15,98,254,0.2);
+  background: #fff;
+}
+.asst-input::placeholder { color: var(--ibm-gray50); }
+
+.asst-send {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--ibm-blue);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background-color 0.15s, transform 0.1s;
+}
+.asst-send:hover  { background: var(--ibm-bluedark); }
+.asst-send:active { transform: scale(0.93); }
+
+/* Scrollbar inside chat log */
+.asst-log::-webkit-scrollbar { width: 4px; }
+.asst-log::-webkit-scrollbar-thumb { background: var(--ibm-gray20); border-radius: 4px; }
